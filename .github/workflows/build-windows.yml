@@ -20,20 +20,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install pyinstaller
+
+      - name: Install PyInstaller (build tool only)
+        run: pip install pyinstaller
 
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller ^
-            --onefile ^
-            --windowed ^
-            --name "inquiry-letter-generator" ^
-            --icon="app_icon.ico" ^
-            --add-data "excel.png;." ^
-            --add-data "pdf.png;." ^
-            --add-data "fonts;fonts" ^
-            --add-data "template.xlsx;." ^
-            main.py
+          pyinstaller --onefile --windowed --name "inquiry-letter-generator" --icon="app_icon.ico" --add-data "excel.png;." --add-data "pdf.png;." --add-data "fonts;fonts" --add-data "template.xlsx;." main.py
 
       - name: Upload Windows Executable
         uses: actions/upload-artifact@v4
