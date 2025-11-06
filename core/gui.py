@@ -9,16 +9,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPalette, QColor, QIcon
 
-# 添加根目录到路径（确保模块能找到）
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
-
 # 绝对导入
 from core.template_manager import TemplateManager
 from generators.excel_generator import generate_excel
 from generators.pdf_generator import generate_pdfs
 from core.utils import get_user_template_path, get_season_from_date
+from core.utils import resource_path
 
 class DarkTheme:
     @staticmethod
@@ -286,7 +282,6 @@ class ExcelToInquiryLetter(QWidget):
         btn_layout = QHBoxLayout()
 
         # 获取图标路径 - 使用 resource_path（推荐）
-        from core.utils import resource_path
         excel_icon = resource_path("assets/excel.png")
         pdf_icon = resource_path("assets/pdf.png")
 

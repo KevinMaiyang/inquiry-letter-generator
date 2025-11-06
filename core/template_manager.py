@@ -1,11 +1,9 @@
 # core/template_manager.py
 import os
+import sys
 import shutil
-from pathlib import Path
 from openpyxl import load_workbook
-
-# 相对导入同包内的 utils
-from .utils import get_user_template_path, get_default_template_path
+from core.utils import get_user_template_path, get_default_template_path
 
 def parse_A9(text):
     """解析 A9 中的地址和联系人"""

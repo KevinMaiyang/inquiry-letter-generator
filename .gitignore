@@ -12,6 +12,7 @@ Thumbs.db
 build/
 dist/
 *.spec
+!build.spec
 
 # Bytecode
 __pycache__/
