@@ -1,6 +1,14 @@
 # main.py
 import sys
 from PyQt6.QtWidgets import QApplication
+
+# 显式导入（帮助 PyInstaller 识别）
+import gui
+import template_manager
+import excel_generator
+import pdf_generator
+import utils
+
 from gui import ExcelToInquiryLetter, DarkTheme
 
 def main():
