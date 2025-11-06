@@ -1,4 +1,4 @@
-# gui.py
+# core/gui.py
 import sys
 import os
 import pandas as pd
@@ -8,11 +8,17 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QPalette, QColor, QIcon
-from template_manager import TemplateManager
-from excel_generator import generate_excel
-from pdf_generator import generate_pdfs
-from utils import get_user_template_path, get_season_from_date
 
+# 添加根目录到路径（确保模块能找到）
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+# 绝对导入
+from core.template_manager import TemplateManager
+from generators.excel_generator import generate_excel
+from generators.pdf_generator import generate_pdfs
+from core.utils import get_user_template_path, get_season_from_date
 
 class DarkTheme:
     @staticmethod
@@ -279,10 +285,10 @@ class ExcelToInquiryLetter(QWidget):
         # ========== 新增：带图标、渐变色的导出按钮 ==========
         btn_layout = QHBoxLayout()
 
-        # 获取图标路径（相对于当前脚本）
-        script_dir = os.path.dirname(__file__)
-        excel_icon = os.path.join(script_dir, "excel.png")
-        pdf_icon = os.path.join(script_dir, "pdf.png")
+        # 获取图标路径 - 使用 resource_path（推荐）
+        from core.utils import resource_path
+        excel_icon = resource_path("assets/excel.png")
+        pdf_icon = resource_path("assets/pdf.png")
 
         self.btn_process = IconButton(
             "导出Excel",

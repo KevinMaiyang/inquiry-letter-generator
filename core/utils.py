@@ -1,4 +1,4 @@
-# utils.py
+# core/utils.py
 import sys
 import os
 from pathlib import Path
@@ -11,7 +11,8 @@ def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".")
+        # 在开发模式下，base_path 应该是项目根目录
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
 def get_user_template_path():
@@ -22,6 +23,10 @@ def get_user_template_path():
         config_dir = Path.home() / ".config" / "InquiryLetterGenerator"
     config_dir.mkdir(parents=True, exist_ok=True)
     return config_dir / "template.xlsx"
+
+def get_default_template_path():
+    """获取默认模板路径（assets目录中的模板）"""
+    return resource_path("assets/template.xlsx")
 
 def parse_date(date_str):
     """解析 'YYYY.M.D' 日期"""

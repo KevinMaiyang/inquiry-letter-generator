@@ -1,8 +1,11 @@
-# template_manager.py
+# core/template_manager.py
 import os
-from openpyxl import load_workbook
-from utils import get_user_template_path, resource_path
 import shutil
+from pathlib import Path
+from openpyxl import load_workbook
+
+# 相对导入同包内的 utils
+from .utils import get_user_template_path, get_default_template_path
 
 def parse_A9(text):
     """解析 A9 中的地址和联系人"""
@@ -19,12 +22,34 @@ class TemplateManager:
         self._ensure_template_exists()
 
     def _ensure_template_exists(self):
+        """确保用户模板存在，如果不存在则从默认模板复制"""
         if not self.user_template.exists():
-            internal = resource_path("template.xlsx")
-            if os.path.exists(internal):
-                shutil.copy2(internal, self.user_template)
+            default_template = get_default_template_path()
+            if os.path.exists(default_template):
+                shutil.copy2(default_template, self.user_template)
+                print(f"已创建用户模板: {self.user_template}")
+            else:
+                # 如果默认模板也不存在，创建一个空的模板文件
+                print(f"警告: 默认模板不存在 {default_template}")
+                self._create_empty_template()
+
+    def _create_empty_template(self):
+        """创建一个空的模板文件"""
+        from openpyxl import Workbook
+        wb = Workbook()
+        ws = wb.active
+        # 设置基本的单元格结构
+        ws['A9'] = "回函地址：    联系人："
+        ws['A10'] = "电话："
+        ws['C10'] = "邮箱："
+        ws['B19'] = ""
+        ws['D20'] = ""
+        wb.save(self.user_template)
 
     def load_fields(self):
+        if not self.user_template.exists():
+            return self._get_default_fields()
+            
         wb = load_workbook(self.user_template, read_only=True, data_only=True)
         ws = wb.active
         a9 = str(ws['A9'].value or "").strip()
@@ -36,6 +61,17 @@ class TemplateManager:
             'email': str(ws['C10'].value or "").replace("邮箱：", "").strip(),
             'issuer': str(ws['B19'].value or "").strip(),
             'date': str(ws['D20'].value or "").strip()
+        }
+
+    def _get_default_fields(self):
+        """返回默认字段值"""
+        return {
+            'address': '',
+            'contact': '',
+            'phone': '',
+            'email': '',
+            'issuer': '',
+            'date': ''
         }
 
     def save_fields(self, fields):

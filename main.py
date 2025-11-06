@@ -1,15 +1,15 @@
 # main.py
 import sys
+import os
 from PyQt6.QtWidgets import QApplication
 
-# 显式导入（帮助 PyInstaller 识别）
-import gui
-import template_manager
-import excel_generator
-import pdf_generator
-import utils
+# 关键：添加项目根目录到Python路径
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 
-from gui import ExcelToInquiryLetter, DarkTheme
+# 绝对导入
+from core.gui import ExcelToInquiryLetter, DarkTheme
 
 def main():
     app = QApplication(sys.argv)

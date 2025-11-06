@@ -6,6 +6,7 @@ myenv/
 
 # System
 .DS_Store
+Thumbs.db
 
 # PyInstaller
 build/
@@ -15,3 +16,16 @@ dist/
 # Bytecode
 __pycache__/
 *.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

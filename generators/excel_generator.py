@@ -1,7 +1,8 @@
-# excel_generator.py
-from openpyxl import Workbook
-from utils import clone_sheet
+# generators/excel_generator.py
 from openpyxl import load_workbook, Workbook
+
+# 绝对导入 core 包中的 utils
+from core.utils import clone_sheet
 
 def generate_excel(data_list, template_path, output_path):
     template_wb = load_workbook(template_path)

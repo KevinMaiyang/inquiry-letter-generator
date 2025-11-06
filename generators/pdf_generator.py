@@ -1,13 +1,20 @@
-# pdf_generator.py
+# generators/pdf_generator.py
 import os
 from fpdf import FPDF
 
 class InquiryPDF(FPDF):
     def __init__(self):
         super().__init__()
-        font_dir = os.path.join(os.path.dirname(__file__), "fonts")
-        self.add_font("AlibabaPuHuiTi-M", "", os.path.join(font_dir, "AlibabaPuHuiTi-3-65-Medium.ttf"), uni=True)
-        self.add_font("AlibabaPuHuiTi-L", "", os.path.join(font_dir, "AlibabaPuHuiTi-3-45-Light.ttf"), uni=True)
+        # 使用相对路径访问字体文件
+        font_dir = os.path.join(os.path.dirname(__file__), "..", "assets", "fonts")
+        font_path = os.path.join(font_dir, "AlibabaPuHuiTi-3-65-Medium.ttf")
+        if os.path.exists(font_path):
+            self.add_font("AlibabaPuHuiTi-M", "", font_path, uni=True)
+        
+        font_path_light = os.path.join(font_dir, "AlibabaPuHuiTi-3-45-Light.ttf")
+        if os.path.exists(font_path_light):
+            self.add_font("AlibabaPuHuiTi-L", "", font_path_light, uni=True)
+    
     def header(self):
         self.set_font("AlibabaPuHuiTi-M", "", 16)
         self.cell(0, 10, "对 账 函", border=0, align="C")
@@ -99,13 +106,13 @@ def generate_single_pdf_content(pdf, data):
     total_width = left_width + right_width
     left_lines = [
         "1.信息证明无误",
-        "(盖章)          ",
+        "(盖章)              ",
         "年       月       日",
         "经办人：          "
     ]
     right_lines = [
         "2.信息不符，请列明不符的详细情况",
-        "(盖章)"          ,
+        "(盖章)              ",
         "年       月       日",
         "经办人：          "
     ]
@@ -126,7 +133,7 @@ def generate_single_pdf_content(pdf, data):
     remark_text = f"3.备注：（如果截止{data['date']}日后情况有变化，请在此列明最新情况）"
     remark_lines = [
         remark_text,
-        "(盖章)"          ,
+        "(盖章)              ",
         "年       月       日",
         "经办人：          "
     ]
