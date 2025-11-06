@@ -1,0 +1,17 @@
+# Virtual environments
+venv/
+env/
+confreq/
+myenv/
+
+# System
+.DS_Store
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Bytecode
+__pycache__/
+*.pyc
